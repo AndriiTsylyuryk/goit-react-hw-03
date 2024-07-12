@@ -1,55 +1,25 @@
-import { useEffect, useState } from "react";
-import Decsription from "./Description/Decsription";
-import Options from "./Options/Options";
-import Feedback from "./Feedback/Feedback";
-import Notification from "./Notification/Notification";
+import { useState } from "react";
+import ContactForm from "./ContactForm/ContactForm";
+import ContactList from "./ContactList/ContactList";
+import SearchBox from "./SearchBox/SearchBox";
+
 
 const App = () => {
-  const [feedback, setFeedback] = useState(() => {
-    const savedFeedback = window.localStorage.getItem("marks");
-    return savedFeedback ? JSON.parse(savedFeedback) : { good: 0, neutral: 0, bad: 0 };
-  });
-console.log(feedback);
-  useEffect(() => {
-    window.localStorage.setItem("marks", JSON.stringify(feedback));
-  }, [feedback]);
-
-  const updateFeedback = (feedbackType) => {
-    setFeedback((prevFeedback) => ({
-      ...prevFeedback,
-      [feedbackType]: prevFeedback[feedbackType] + 1,
-    }));
-  };
-
-  const totalFeedback = feedback.good + feedback.neutral + feedback.bad;
   
-  const positiveFeedback = Math.round((feedback.good / totalFeedback) * 100);
-
-  const resetFeedback = () => {
-    setFeedback({
-      good: 0,
-      neutral: 0,
-      bad: 0,
-    });
-  };
-
+const [contactList, setContactList] = useState(
+  [
+    {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
+    {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
+    {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
+    {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
+  ]
+)
   return (
     <div>
-      <Decsription />
-      <Options
-        updateFeedback={updateFeedback}
-        totalFeedback={totalFeedback}
-        resetFeedback={resetFeedback}
-      />
-      {totalFeedback ? (
-        <Feedback
-          feedback={feedback}
-          totalFeedback={totalFeedback}
-          positiveFeedback={positiveFeedback}
-        />
-      ) : (
-        <Notification />
-      )}
+      <h1>Phonebook</h1>
+      <ContactForm/>
+      <SearchBox/>
+      <ContactList contactList={contactList}/>
     </div>
   );
 };
