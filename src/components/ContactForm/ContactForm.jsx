@@ -1,8 +1,22 @@
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import React from "react";
 import { nanoid } from "nanoid";
+import * as Yup from "yup";
+import s from "./ContactForm.module.css";
 
-const ContactForm = ({ addNewContact }) => {
+const ContactForm = ({ addNewContact}) => {
+  const schema = Yup.object({
+    name: Yup.string()
+      .required("This field is required")
+      .min(3, "add more")
+      .max(50, "too much chars"),
+
+    tel: Yup.string('please add only numbers')
+      .required("This field is required")
+      .min(3, "add more")
+      .max(50, "too much chars"),
+  });
+
   const initialValues = {
     name: "",
     tel: "",
@@ -14,15 +28,21 @@ const ContactForm = ({ addNewContact }) => {
   };
   return (
     <div>
-      <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+      <Formik
+        initialValues={initialValues}
+        onSubmit={handleSubmit}
+        validationSchema={schema}
+      >
         <Form>
-          <label>
+          <label className={s.label}>
             <span>Name</span>
             <Field name="name" />
+            <ErrorMessage name="name" component="span" className={s.span} />
           </label>
           <label>
             <span>Number</span>
             <Field name="tel" />
+            <ErrorMessage name="tel" component="span" className={s.span} />
           </label>
           <button type="submit">Add Contact</button>
         </Form>
