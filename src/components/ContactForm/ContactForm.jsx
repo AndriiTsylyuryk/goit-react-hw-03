@@ -11,7 +11,7 @@ const ContactForm = ({ addNewContact}) => {
       .min(3, "add more")
       .max(50, "too much chars"),
 
-    tel: Yup.string('please add only numbers')
+      number: Yup.string('please add only numbers')
       .required("This field is required")
       .min(3, "add more")
       .max(50, "too much chars"),
@@ -19,7 +19,7 @@ const ContactForm = ({ addNewContact}) => {
 
   const initialValues = {
     name: "",
-    tel: "",
+    number: "",
     id: "",
   };
   const handleSubmit = (data) => {
@@ -27,13 +27,13 @@ const ContactForm = ({ addNewContact}) => {
     addNewContact(data, (data.id = nanoid()));
   };
   return (
-    <div>
+    <div >
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
         validationSchema={schema}
       >
-        <Form>
+        <Form className={s.wrapper}> 
           <label className={s.label}>
             <span>Name</span>
             <Field name="name" />
@@ -41,8 +41,8 @@ const ContactForm = ({ addNewContact}) => {
           </label>
           <label>
             <span>Number</span>
-            <Field name="tel" />
-            <ErrorMessage name="tel" component="span" className={s.span} />
+            <Field name="number" />
+            <ErrorMessage name="number" component="span" className={s.span} />
           </label>
           <button type="submit">Add Contact</button>
         </Form>
